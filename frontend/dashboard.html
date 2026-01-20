@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BI Dashboard - Eco Packaging</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Same theme CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+<div class="container mt-5 mb-5">
+
+  <!-- Header (same theme as index) -->
+  <div class="header-card mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
+      <div>
+        <h2 class="mb-1 title">Business Intelligence Dashboard</h2>
+        <div class="subtitle">Analytics + Trends + Report Export</div>
+      </div>
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="index.html" class="btn btn-outline-light">Back to Main UI</a>
+        <button class="btn btn-warning fw-bold" id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters + Actions -->
+  <div class="card form-card p-4 mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label fw-bold" for="fragilityFilter">Filter by Fragility</label>
+        <select class="form-select" id="fragilityFilter">
+          <option value="all">All Levels</option>
+          <option value="1">1 (Low)</option>
+          <option value="2">2</option>
+          <option value="3">3 (Medium)</option>
+          <option value="4">4</option>
+          <option value="5">5 (High)</option>
+        </select>
+      </div>
+
+      <div class="col-md-8 d-flex gap-2 justify-content-md-end flex-wrap">
+        <a class="btn btn-success fw-bold" href="http://127.0.0.1:5000/dashboard/export/excel">
+          Export Excel Report
+        </a>
+
+        <a class="btn btn-primary fw-bold" href="http://127.0.0.1:5000/dashboard/history" target="_blank">
+          View History JSON
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card kpi-card p-3">
+        <div class="kpi-title">Total Recommendations</div>
+        <div class="kpi-value" id="totalRec">0</div>
+        <div class="text-muted small">Logged predictions</div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card kpi-card p-3">
+        <div class="kpi-title">Average Eco Score</div>
+        <div class="kpi-value" id="avgEco">0</div>
+        <div class="text-muted small">Higher = greener</div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card kpi-card p-3">
+        <div class="kpi-title">Average Cost Score</div>
+        <div class="kpi-value" id="avgCost">0</div>
+        <div class="text-muted small">Normalized (0–1)</div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card kpi-card p-3">
+        <div class="kpi-title">Top Recommended Material</div>
+        <div class="kpi-value" id="topMat">-</div>
+        <div class="text-muted small">Most frequent</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-7">
+      <div class="card table-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="mb-0">Top Materials Usage Trend</h5>
+          <span class="pill">Chart</span>
+        </div>
+        <canvas id="trendChart"></canvas>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card table-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="mb-0">Avg Eco vs Avg CO₂</h5>
+          <span class="pill">Insights</span>
+        </div>
+        <canvas id="ecoChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent history table -->
+  <div class="card table-card p-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">Recent Recommendations</h5>
+      <span class="text-muted small">Last 10 records</span>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered align-middle mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>Timestamp</th>
+            <th>Weight</th>
+            <th>Volume</th>
+            <th>Fragility</th>
+            <th>Best Material</th>
+            <th>Eco Score</th>
+            <th>Cost Score</th>
+          </tr>
+        </thead>
+        <tbody id="recentTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
