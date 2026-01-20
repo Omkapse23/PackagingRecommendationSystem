@@ -4,7 +4,7 @@ let trendChartInstance = null;
 let ecoChartInstance = null;
 
 //  API Base
-const API_BASE = "https://packagingrecommendationsystem-1.onrender.com/dashboard";
+const API_BASE = "https://packagingrecommendationsystem.onrender.com/dashboard";
 
 function formatNumber(val, digits = 2) {
   if (val === null || val === undefined || isNaN(val)) return "0";

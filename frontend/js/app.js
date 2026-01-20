@@ -12,7 +12,7 @@ document.getElementById("productForm").addEventListener("submit", function (e) {
         return;
     }
 
-    fetch("https://packagingrecommendationsystem-1.onrender.com/predict", {
+    fetch("https://packagingrecommendationsystem.onrender.com/predict", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
