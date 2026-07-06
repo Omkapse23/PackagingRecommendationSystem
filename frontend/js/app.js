@@ -1,7 +1,6 @@
 document.getElementById("productForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // Read input values
     const weight = Number(document.getElementById("weight").value);
     const volume = Number(document.getElementById("volume").value);
     const fragility = Number(document.getElementById("fragility").value);
@@ -27,6 +26,14 @@ document.getElementById("productForm").addEventListener("submit", function (e) {
         return;
     }
 
+    // Show loading spinner
+    document.getElementById("loadingSection").style.display = "block";
+    document.getElementById("resultSection").style.display = "none";
+
+    const btn = document.getElementById("recommendBtn");
+    btn.disabled = true;
+    btn.innerHTML = "Generating Recommendation...";
+
     fetch("https://packagingrecommendationsystem.onrender.com/predict", {
         method: "POST",
         headers: {
@@ -46,21 +53,37 @@ document.getElementById("productForm").addEventListener("submit", function (e) {
     })
     .then(data => {
 
-        // Show result section
+        // Hide loading
+        document.getElementById("loadingSection").style.display = "none";
+
+        // Enable button
+        btn.disabled = false;
+        btn.innerHTML = "Get AI Recommendation";
+
+        // Show result
         document.getElementById("resultSection").style.display = "block";
 
-        // Recommended Material
-        document.getElementById("recommendedMaterial").innerText =
-            "Material: " + data.best_material_name + " (" + data.best_material + ")";
+        // Recommendation Card
+        document.getElementById("recommendedMaterial").innerHTML = `
+            <div class="fs-4 fw-bold text-success">
+                ${data.best_material_name}
+            </div>
 
-        // Eco Score
-        document.getElementById("ecoScore").innerText =
-            "Eco Score: " + data.best_eco_score;
+            <div class="text-muted mt-1">
+                Material ID: ${data.best_material}
+            </div>
+        `;
 
-        // Cost
-        document.getElementById("estimatedCost").innerText =
-            "Price (₹): " + data.best_price_inr +
-            " | Cost Index: " + data.best_cost_index;
+        document.getElementById("ecoScore").innerHTML = `
+            <span class="fs-3 fw-bold text-success">
+                ${data.best_eco_score}
+            </span>
+        `;
+
+        document.getElementById("estimatedCost").innerHTML = `
+            <div><strong>Price:</strong> ₹${data.best_price_inr}</div>
+            <div><strong>Cost Index:</strong> ${data.best_cost_index}</div>
+        `;
 
         // Ranking Table
         let rows = "";
@@ -69,11 +92,22 @@ document.getElementById("productForm").addEventListener("submit", function (e) {
 
             rows += `
                 <tr>
-                    <td>${index + 1}</td>
-                    <td>${item.material_name} (${item.material})</td>
-                    <td>₹${item.price_inr}</td>
-                    <td>${item.co2}</td>
-                    <td>${item.eco_score}</td>
+                    <td class="fw-bold">${index + 1}</td>
+
+                    <td>
+                        <strong>${item.material_name}</strong><br>
+                        <small class="text-muted">${item.material}</small>
+                    </td>
+
+                    <td>₹${Number(item.price_inr).toFixed(2)}</td>
+
+                    <td>${Number(item.co2).toFixed(3)}</td>
+
+                    <td>
+                        <span class="badge bg-success">
+                            ${Number(item.eco_score).toFixed(2)}
+                        </span>
+                    </td>
                 </tr>
             `;
         });
@@ -81,7 +115,14 @@ document.getElementById("productForm").addEventListener("submit", function (e) {
         document.getElementById("rankingTable").innerHTML = rows;
     })
     .catch(error => {
+
+        document.getElementById("loadingSection").style.display = "none";
+
+        btn.disabled = false;
+        btn.innerHTML = "Get AI Recommendation";
+
         console.error(error);
-        alert("Error connecting frontend with backend.");
+
+        alert("Unable to connect to the backend server. Please try again later.");
     });
 });

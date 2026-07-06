@@ -16,10 +16,13 @@ def get_material_name(row):
 
     for col in material_cols:
         val = row.get(col)
-        if str(val).upper() == "TRUE":
-            return col.replace("_", " ")
 
-    return "Unknown Material Type"
+        if str(val).upper() == "TRUE":
+            material_name = col.replace("Material_", "")
+            material_name = material_name.replace("_", " ")
+            return material_name
+
+    return "Unknown Material"
 
 
 def recommend_material(weight, volume, fragility):
@@ -34,40 +37,39 @@ def recommend_material(weight, volume, fragility):
 
     data = df.copy()
 
-    # ---------------- FILTERING (IMPORTANT) ----------------
-    # Filter by weight capacity if column exists
+    # ---------------- FILTERING ----------------
     if "Weight_Capacity" in data.columns:
         data = data[data["Weight_Capacity"] >= (weight * 0.9)]
 
-    # Fragility based strength filtering
     if fragility >= 4:
         if "Strength_Index" in data.columns:
             data = data[data["Strength_Index"] >= data["Strength_Index"].quantile(0.60)]
+
         if "Recyclability" in data.columns:
             data = data[data["Recyclability"] >= 0.4]
 
-    # fallback if filtered dataset becomes empty
     if len(data) == 0:
         data = df.copy()
 
     # ---------------- ECO SCORE ----------------
-    # Use CO2_Emission if available
     if "CO2_Emission" in data.columns:
         co2_min = data["CO2_Emission"].min()
         co2_max = data["CO2_Emission"].max()
 
         if co2_max != co2_min:
-            data["co2_norm"] = (data["CO2_Emission"] - co2_min) / (co2_max - co2_min)
+            data["co2_norm"] = (
+                data["CO2_Emission"] - co2_min
+            ) / (co2_max - co2_min)
         else:
             data["co2_norm"] = 0
 
         data["eco_score"] = 100 - (data["co2_norm"] * 100)
     else:
-        # fallback
         data["eco_score"] = 50
 
-    # reward biodegradability if present
+    # ---------------- BIODEGRADABILITY BONUS ----------------
     biodeg_col = None
+
     for c in data.columns:
         if "Biodegrad" in c:
             biodeg_col = c
@@ -76,17 +78,17 @@ def recommend_material(weight, volume, fragility):
     if biodeg_col:
         data["eco_score"] = data["eco_score"] + (data[biodeg_col] * 10)
 
-    # cap eco score
     data["eco_score"] = data["eco_score"].clip(0, 100)
 
     # ---------------- PRICE NORMALIZATION ----------------
-    # Price_INR should be real INR column
     if "Price_INR" in data.columns:
         pmin = data["Price_INR"].min()
         pmax = data["Price_INR"].max()
 
         if pmax != pmin:
-            data["price_norm"] = (data["Price_INR"] - pmin) / (pmax - pmin)
+            data["price_norm"] = (
+                data["Price_INR"] - pmin
+            ) / (pmax - pmin)
         else:
             data["price_norm"] = 0
     else:
@@ -96,14 +98,20 @@ def recommend_material(weight, volume, fragility):
     # ---------------- FINAL SCORE ----------------
     eco_weight = 0.6 + (fragility * 0.08)
     eco_weight = min(eco_weight, 0.95)
+
     price_weight = 1 - eco_weight
 
-    data["final_score"] = (eco_weight * data["eco_score"]) - (price_weight * data["price_norm"] * 100)
+    data["final_score"] = (
+        eco_weight * data["eco_score"]
+    ) - (price_weight * data["price_norm"] * 100)
 
-    data_sorted = data.sort_values(by="final_score", ascending=False)
+    data_sorted = data.sort_values(
+        by="final_score",
+        ascending=False
+    )
+
     best = data_sorted.iloc[0]
 
-    # SAFE numeric fetch (prevents 0 and undefined issues)
     best_price = best.get("Price_INR", 0)
     if pd.isna(best_price):
         best_price = 0
@@ -113,7 +121,9 @@ def recommend_material(weight, volume, fragility):
         best_cost_index = 0
 
     ranking = []
+
     for _, row in data_sorted.head(50).iterrows():
+
         price = row.get("Price_INR", 0)
         if pd.isna(price):
             price = 0

@@ -3,149 +3,335 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BI Dashboard - Eco Packaging</title>
+  <title>Business Intelligence Dashboard | Eco Packaging Recommendation System</title>
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Same theme CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 
 <body>
 
 <div class="container mt-5 mb-5">
 
-  <!-- Header (same theme as index) -->
-  <div class="header-card mb-4">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
-      <div>
-        <h2 class="mb-1 title">Business Intelligence Dashboard</h2>
-        <div class="subtitle">Analytics + Trends + Report Export</div>
-      </div>
+    <!-- Header -->
 
-      <div class="d-flex gap-2 flex-wrap">
-        <a href="index.html" class="btn btn-outline-light">Back to Main UI</a>
-        <button class="btn btn-warning fw-bold" id="refreshBtn">Refresh</button>
-      </div>
-    </div>
-  </div>
+    <div class="header-card mb-4">
 
-  <!-- Filters + Actions -->
-  <div class="card form-card p-4 mb-4">
-    <div class="row g-3 align-items-end">
-      <div class="col-md-4">
-        <label class="form-label fw-bold" for="fragilityFilter">Filter by Fragility</label>
-        <select class="form-select" id="fragilityFilter">
-          <option value="all">All Levels</option>
-          <option value="1">1 (Low)</option>
-          <option value="2">2</option>
-          <option value="3">3 (Medium)</option>
-          <option value="4">4</option>
-          <option value="5">5 (High)</option>
-        </select>
-      </div>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3">
 
-      <div class="col-md-8 d-flex gap-2 justify-content-md-end flex-wrap">
-        <a class="btn btn-success fw-bold" href="https://packagingrecommendationsystem.onrender.com/dashboard/export/excel" target="_blank">
-          Export Excel Report
-        </a>
+            <div>
 
-        <a class="btn btn-primary fw-bold" href="https://packagingrecommendationsystem.onrender.com/dashboard/history" target="_blank">
-          View History JSON
-        </a>
-      </div>
-    </div>
-  </div>
+                <h2 class="mb-1 title">
 
-  <!-- KPI Cards -->
-  <div class="row g-3 mb-4">
-    <div class="col-md-3">
-      <div class="card kpi-card p-3">
-        <div class="kpi-title">Total Recommendations</div>
-        <div class="kpi-value" id="totalRec">0</div>
-        <div class="text-muted small">Logged predictions</div>
-      </div>
-    </div>
+                    Business Intelligence Dashboard
 
-    <div class="col-md-3">
-      <div class="card kpi-card p-3">
-        <div class="kpi-title">Average Eco Score</div>
-        <div class="kpi-value" id="avgEco">0</div>
-        <div class="text-muted small">Higher = greener</div>
-      </div>
-    </div>
+                </h2>
 
-    <div class="col-md-3">
-      <div class="card kpi-card p-3">
-        <div class="kpi-title">Average Cost Score</div>
-        <div class="kpi-value" id="avgCost">0</div>
-        <div class="text-muted small">Normalized (0–1)</div>
-      </div>
-    </div>
+                <div class="subtitle">
 
-    <div class="col-md-3">
-      <div class="card kpi-card p-3">
-        <div class="kpi-title">Top Recommended Material</div>
-        <div class="kpi-value" id="topMat">-</div>
-        <div class="text-muted small">Most frequent</div>
-      </div>
-    </div>
-  </div>
+                    Real-time Analytics • Material Insights • Sustainability Reports
 
-  <!-- Charts -->
-  <div class="row g-3 mb-4">
-    <div class="col-lg-7">
-      <div class="card table-card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <h5 class="mb-0">Top Materials Usage Trend</h5>
-          <span class="pill">Chart</span>
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap">
+
+                <a href="index.html" class="btn btn-outline-light">
+
+                    Home
+
+                </a>
+
+                <button class="btn btn-warning fw-bold" id="refreshBtn">
+
+                    Refresh Dashboard
+
+                </button>
+
+            </div>
+
         </div>
-        <canvas id="trendChart"></canvas>
-      </div>
+
     </div>
 
-    <div class="col-lg-5">
-      <div class="card table-card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <h5 class="mb-0">Avg Eco vs Avg CO₂</h5>
-          <span class="pill">Insights</span>
+    <!-- Filters -->
+
+    <div class="card form-card p-4 mb-4">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+
+                <label class="form-label fw-bold">
+
+                    Filter by Fragility Level
+
+                </label>
+
+                <select class="form-select" id="fragilityFilter">
+
+                    <option value="all">All Levels</option>
+                    <option value="1">1 (Low)</option>
+                    <option value="2">2</option>
+                    <option value="3">3 (Medium)</option>
+                    <option value="4">4</option>
+                    <option value="5">5 (High)</option>
+
+                </select>
+
+            </div>
+
+            <div class="col-md-8 d-flex gap-2 justify-content-md-end flex-wrap">
+
+                <a class="btn btn-success fw-bold"
+                   href="https://packagingrecommendationsystem.onrender.com/dashboard/export/excel"
+                   target="_blank">
+
+                    Export Excel Report
+
+                </a>
+
+                <a class="btn btn-primary fw-bold"
+                   href="https://packagingrecommendationsystem.onrender.com/dashboard/history"
+                   target="_blank">
+
+                    View Recommendation History
+
+                </a>
+
+            </div>
+
         </div>
-        <canvas id="ecoChart"></canvas>
-      </div>
-    </div>
-  </div>
 
-  <!-- Recent history table -->
-  <div class="card table-card p-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="mb-0">Recent Recommendations</h5>
-      <span class="text-muted small">Last 10 records</span>
     </div>
 
-    <div class="table-responsive">
-      <table class="table table-bordered align-middle mb-0">
-        <thead class="table-dark">
-          <tr>
-            <th>Timestamp</th>
-            <th>Weight</th>
-            <th>Volume</th>
-            <th>Fragility</th>
-            <th>Best Material</th>
-            <th>Eco Score</th>
-            <th>Cost Score</th>
-          </tr>
-        </thead>
-        <tbody id="recentTable"></tbody>
-      </table>
+    <!-- KPI -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-md-3">
+
+            <div class="card kpi-card p-3">
+
+                <div class="kpi-title">
+
+                    Total Recommendations
+
+                </div>
+
+                <div class="kpi-value" id="totalRec">0</div>
+
+                <div class="text-muted small">
+
+                    Predictions Generated
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card kpi-card p-3">
+
+                <div class="kpi-title">
+
+                    Average Eco Score
+
+                </div>
+
+                <div class="kpi-value" id="avgEco">0</div>
+
+                <div class="text-muted small">
+
+                    Sustainability Rating
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card kpi-card p-3">
+
+                <div class="kpi-title">
+
+                    Average Cost Index
+
+                </div>
+
+                <div class="kpi-value" id="avgCost">0</div>
+
+                <div class="text-muted small">
+
+                    Relative Cost Efficiency
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card kpi-card p-3">
+
+                <div class="kpi-title">
+
+                    Most Recommended Material
+
+                </div>
+
+                <div class="kpi-value" id="topMat">-</div>
+
+                <div class="text-muted small">
+
+                    Highest Recommendation Frequency
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
+
+    <!-- Charts -->
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-lg-7">
+
+            <div class="card table-card p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                    <h5 class="mb-0">
+
+                        Top Recommended Materials
+
+                    </h5>
+
+                    <span class="pill">
+
+                        Analytics
+
+                    </span>
+
+                </div>
+
+                <canvas id="trendChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-5">
+
+            <div class="card table-card p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                    <h5 class="mb-0">
+
+                        Eco Score vs CO₂ Emission
+
+                    </h5>
+
+                    <span class="pill">
+
+                        Sustainability
+
+                    </span>
+
+                </div>
+
+                <canvas id="ecoChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Table -->
+
+    <div class="card table-card p-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h5 class="mb-0">
+
+                Recent AI Recommendations
+
+            </h5>
+
+            <span class="text-muted">
+
+                Latest 10 Predictions
+
+            </span>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-bordered table-hover align-middle">
+
+                <thead class="table-dark">
+
+                <tr>
+
+                    <th>Timestamp</th>
+                    <th>Weight</th>
+                    <th>Volume</th>
+                    <th>Fragility</th>
+                    <th>Best Material</th>
+                    <th>Eco Score</th>
+                    <th>Cost Index</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="recentTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
+<footer class="text-center mt-5 mb-4">
+
+    <hr>
+
+    <h6>
+
+        Developed by <strong>Om Kapse</strong>
+
+    </h6>
+
+    <p class="text-muted">
+
+        AI • Machine Learning • Flask • Python • HTML • CSS • JavaScript • Bootstrap • Chart.js
+
+    </p>
+
+</footer>
+
 <script src="js/dashboard.js"></script>
+
 </body>
 </html>
