@@ -33,8 +33,6 @@ def recommend_material(weight, volume, fragility):
         fragility = 5
 
     data = df.copy()
-    print(df.columns.tolist())
-    print(df[["Material_ID", "CO2_Emission"]].head())
 
     # ---------------- FILTERING (IMPORTANT) ----------------
     # Filter by weight capacity if column exists
