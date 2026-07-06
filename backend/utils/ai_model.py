@@ -52,13 +52,13 @@ def recommend_material(weight, volume, fragility):
         data = df.copy()
 
     # ---------------- ECO SCORE ----------------
-    if "CO2_Emission" in data.columns:
-        co2_min = data["CO2_Emission"].min()
-        co2_max = data["CO2_Emission"].max()
+    if "CO2_Emission_Score_kg" in data.columns:
+        co2_min = data["CO2_Emission_Score_kg"].min()
+        co2_max = data["CO2_Emission_Score_kg"].max()
 
         if co2_max != co2_min:
             data["co2_norm"] = (
-                data["CO2_Emission"] - co2_min
+                data["CO2_Emission_Score_kg"] - co2_min
             ) / (co2_max - co2_min)
         else:
             data["co2_norm"] = 0
@@ -137,7 +137,10 @@ def recommend_material(weight, volume, fragility):
             "material_name": get_material_name(row),
             "price_inr": round(float(price), 2),
             "cost_index": round(float(cost_index), 3),
-            "co2": round(float(row.get("CO2_Emission", 0) or 0), 3),
+
+            # ✅ FIXED CO₂ COLUMN
+            "co2": round(float(row.get("CO2_Emission_Score_kg", 0) or 0), 3),
+
             "eco_score": round(float(row.get("eco_score", 0) or 0), 2)
         })
 
