@@ -1,3 +1,5 @@
+Website Link :- https://packagingrecommendationsystem-1.onrender.com
+
 # 📦 EcoPackAI – AI-Powered Sustainable Packaging Recommendation System  
 
 EcoPackAI is an AI-powered packaging recommendation system that suggests the **best eco-friendly packaging material** based on product characteristics like **weight**, **volume**, and **fragility**.  
@@ -103,6 +105,33 @@ It uses machine learning models + an eco-score ranking logic to generate a **ran
 
 ---
 
+### ✅ Milestone 4 – Business Dashboard + Deployment (Module 7 & 8)  
+**Completed Tasks** 
+- Built sustainability analytics dashboard showing:
+  - **CO₂ reduction %**
+  - **Cost savings**
+  - **Material usage trends**
+- Generated charts using visualization libraries:
+  - `matplotlib` / `plotly`
+- Created sustainability output reports in Excel:
+  - `dashboard_report.xlsx`
+  - `sustainability_report.xlsx`
+- Stored recommendation history for tracking and analytics:
+  - `recommendation_history.csv`
+
+- Deployed the project on **Render** (cloud deployment)
+- Connected deployed backend with **MySQL database**
+- Verified:
+  - backend API working online
+  - MySQL cloud connection working properly
+  - system working end-to-end after deployment
+- Completed:
+  - `README.md`
+  - `Project_Documentation.md`
+  
+
+---
+
 ## 🔌 API Endpoints  
 
 | Method | Endpoint | Purpose |
@@ -149,34 +178,77 @@ POST /predict
 
 ```
 Packaging-Recommendation-System/
-│ README.md
-│ requirements.txt
-│ Project_Documentation.md
-│
-├── notebooks/
-│   module1.ipynb
-│   module2.ipynb
-│   module3.ipynb
-│   module4.ipynb
-│
-├── dataset/
-│   data.csv
-│   cleaned_materials.csv
+├── .venv/
 │
 ├── backend/
-│   app.py
-│   config.py
-│   database.py
-│   models.py
-│   recommendation_routes.py
-│   product_routes.py
-│   ai_model.py
-│   env_score.py
+│   ├── __pycache__/
+│   ├── databases/
+│   │   ├── dashboard_report.xlsx
+│   │   ├── recommendation_history.csv
+│   │   └── sustainability_report.xlsx
+│   │
+│   ├── routes/
+│   │   ├── __pycache__/
+│   │   ├── dashboard_routes.py
+│   │   ├── product_routes.py
+│   │   └── recommendation_routes.py
+│   │
+│   ├── utils/
+│   │   ├── __pycache__/
+│   │   ├── ai_model.py
+│   │   ├── env_score.py
+│   │   └── history_logger.py
+│   │
+│   ├── app.py
+│   ├── config.py
+│   ├── database.py
+│   ├── models.py
+│   └── requirements.txt
 │
-└── frontend/
-    index.html
-    style.css
-    app.js
+├── databases/
+│   ├── import.sql
+│   ├── recommendation_history.csv
+│   ├── schema.sql
+│   └── validation.sql
+│
+├── dataset/
+│   ├── cleaned_materials.csv
+│   └── recommendation_history.csv
+│
+├── frontend/
+│   ├── css/
+│   │   └── style.css
+│   │
+│   ├── js/
+│   │   ├── app.js
+│   │   └── dashboard.js
+│   │
+│   ├── dashboard.html
+│   └── index.html
+│
+├── notebooks/
+│   ├── cleaned_materials.csv
+│   ├── data.csv
+│   ├── module1.ipynb
+│   ├── module2.ipynb
+│   ├── module3.ipynb
+│   └── module4.ipynb
+│
+├── Packaging-Recommendation-System/        # (folder)
+│
+├── AI Framework for Sustainable Packa...   # (PDF/Doc file)
+├── Branch_details.xlsx
+├── data.csv
+├── LICENSE
+├── materials_cleaned.csv
+├── materials_milestone1_final.csv
+├── milestone1_data_preprocessing.ipynb
+├── milestone2_model_training.ipynb
+├── Packaging_Recommendation_System...      # (Doc file)
+├── Project_Documentation_.md
+├── README.md
+└── requirements.txt
+
 ```
 
 ---
@@ -219,3 +291,6 @@ Open `frontend/index.html` using:
 - Store recommendation history in MySQL
 - Improve ranking using weighted composite scoring
 - Cloud deployment (Render / Railway / AWS)
+- Improve BI Dashboard (interactive filters + PDF report export)
+
+---
